@@ -11,6 +11,8 @@ app_color = "#5DADE2"
 app_email = "oscar@test.com"
 app_license = "MIT"
 
+fixtures = ['Custom Script', 'Custom Field']
+
 # Includes in <head>
 # ------------------
 

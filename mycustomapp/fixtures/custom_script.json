@@ -1,0 +1,14 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Custom Script",
+  "dt": "Customer",
+  "modified": "2019-10-17 15:53:14.991948",
+  "name": "Customer-Client",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "script": "frappe.ui.form.on('Customer', {\n    nit1: function (frm) {\n        var nit_validado;\n        var cus_supp = frm.doc.customer_name; // Nombre de cliente o proveedor\n        var nit = frm.doc.nit1;\n        if (nit === \"C/F\" || nit === \"c/f\") {\n            frm.enable_save(); // Activa y Muestra el boton guardar de Sales Invoice\n        } else {\n            var nd, add = 0;\n            if (nd = /^(\\d+)\\-?([\\dk])$/i.exec(nit)) {\n                nd[2] = (nd[2].toLowerCase() == 'k') ? 10 : parseInt(nd[2]);\n                for (var i = 0; i < nd[1].length; i++) {\n                    add += ((((i - nd[1].length) * -1) + 1) * nd[1][i]);\n                }\n                nit_validado = ((11 - (add % 11)) % 11) == nd[2];\n            } else {\n                nit_validado = false;\n            }\n\n            if (nit_validado === false) {\n                frappe.show_alert({\n                    indicator: 'orange',\n                    message: __(`\n                NIT de <a href= '#Form/Customer/${cus_supp}'><b>${cus_supp}</b></a> no es correcto. Si no tiene disponible el NIT modifiquelo a C/F.\n                `)\n                });\n\n                frm.disable_save(); // Desactiva y Oculta el boton de guardar en Sales Invoice\n            }\n            if (nit_validado === true) {\n                frm.enable_save(); // Activa y Muestra el boton guardar de Sales Invoice\n            }\n        }\n    }\n});",
+  "script_type": "Client"
+ }
+]
